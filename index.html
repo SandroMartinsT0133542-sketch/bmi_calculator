@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <table>
+    <caption>Resumo de Notas</caption>
+    <thead>
+      <tr>
+        <th scope="col">Aluno</th>
+        <th scope="col">Nota</th>
+        <th scope="col">Class.</th>
+      </tr>
+    </thead>
+    <tbody id="table-body">
+      <tr>
+        <td>Ana Silva</td>
+        <td>18</td>
+        <td>Excelente</td>
+      </tr>
+      <tr>
+        <td>Bruno Costa</td>
+        <td>14</td>
+        <td>Bom</td>
+      </tr>
+      <div><button onclick="createTableElements()">ADD USERS</button></div>
+    </tbody>
+    <tfoot>
+      <tr>
+        <td>Media</td>
+        <td id="average-cell"></td>
+      </tr>
+    </tfoot>
+  </table>
+  <script>
+    function createTableElements() {
+      const tbody = document.getElementById("table-body");
+      const tr = document.createElement("tr");
+
+      const nota = Math.floor(Math.random() * 20);
+      const aluno = `Aluno ${Math.floor(Math.random() * 100)}`;
+      const classificacao = nota >= 18 ? "Excelente" : nota >= 14 ? "Bom" : "Mau";
+
+      tbody.appendChild(tr);
+
+      for (let j = 0; j < 3; j++) {
+        const td = document.createElement("td");
+        tr.appendChild(td);
+        if (j === 0) {
+          td.innerText = aluno;
+        } else if (j === 1) {
+          td.innerText = nota;
+        } else {
+          td.innerText = classificacao;
+        }
+      }
+      getAverage();
+    }
+
+    function getAverage() {
+      const notes = document.querySelectorAll("#table-body td:nth-child(2)");
+      let total = 0;
+      const averageCell = document.getElementById("average-cell");
+
+      notes.forEach(note => {
+        const value = parseInt(note.innerText);
+        if (!isNaN(value)) {
+          total += value;
+        }
+      });
+
+      const average = total / notes.length;
+      averageCell.innerText = isNaN(average) ? 0 : average.toFixed(2);
+    }
+  </script>
+</body>
+
+</html>
