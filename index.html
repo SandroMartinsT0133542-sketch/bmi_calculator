@@ -1,42 +1,109 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-PT">
 
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Document</title>
+  <title>Calculadora de IMC</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
 </head>
 
-<body>
-  <table>
-    <caption>Resumo de Notas</caption>
-    <thead>
-      <tr>
-        <th scope="col">Aluno</th>
-        <th scope="col">Nota</th>
-        <th scope="col">Class.</th>
-      </tr>
-    </thead>
-    <tbody id="table-body">
-      <tr>
-        <td>Ana Silva</td>
-        <td>18</td>
-        <td>Excelente</td>
-      </tr>
-      <tr>
-        <td>Bruno Costa</td>
-        <td>14</td>
-        <td>Bom</td>
-      </tr>
-      <div><button onclick="createTableElements()">ADD USERS</button></div>
-    </tbody>
-    <tfoot>
-      <tr>
-        <td>Media</td>
-        <td id="average-cell"></td>
-      </tr>
-    </tfoot>
-  </table>
+<body class="bg-light">
+  <main class="container py-5">
+    <div class="row justify-content-center">
+      <div class="col-12 col-md-8 col-lg-6">
+        <section class="card shadow-sm border-0">
+          <div class="card-body p-4 p-md-5">
+            <div class="d-flex align-items-center justify-content-between mb-3">
+              <h1 class="h3 mb-2">Calculadora de IMC</h1>
+              <button id="info" type="button" class="btn btn-outline-info btn-info-icon" data-bs-toggle="modal"
+                data-bs-target="#info-modal" title="Sobre o IMC">
+                <i class="bi bi-info-circle"></i>
+              </button>
+            </div>
+            <p class="text-secondary mb-4">Introduza o peso em kg e a altura em metros.</p>
+            <div id="info-modal" class="modal fade" tabindex="-1">
+              <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h5 class="modal-title">Índice de Massa Corporal (IMC)</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
+                  </div>
+                  <div class="modal-body">
+                    <p>O Índice de Massa Corporal (IMC) é uma medida utilizada para avaliar se uma pessoa está com peso
+                      adequado em relação à sua altura. O cálculo do IMC é feito dividindo o peso da pessoa (em kg) pela
+                      altura ao quadrado (em metros).</p>
+                    <p>A Organização Mundial da Saúde (OMS) classifica o IMC em categorias, que ajudam a identificar se
+                      uma pessoa está abaixo do peso, com peso normal, sobrepeso ou obesidade. Essas categorias são
+                      importantes para avaliar os riscos à saúde associados a diferentes faixas de peso.</p>
+                    <p><strong>As categorias de IMC segundo a OMS são:</strong></p>
+                    <ul>
+                      <li><strong>Magreza grave:</strong> IMC menor que 16,0</li>
+                      <li><strong>Magreza moderada:</strong> IMC entre 16,0 e 16,99</li>
+                      <li><strong>Magreza leve:</strong> IMC entre 17,0 e 18,49</li>
+                      <li><strong>Peso normal:</strong> IMC entre 18,5 e 24,9</li>
+                      <li><strong>Pré-obesidade (Sobrepeso):</strong> IMC entre 25,0 e 29,99</li>
+                      <li><strong>Obesidade grau I:</strong> IMC entre 30,0 e 34,99</li>
+                      <li><strong>Obesidade grau II:</strong> IMC entre 35,0 e 39,99</li>
+                      <li><strong>Obesidade grau III (Mórbida):</strong> IMC igual ou maior que 40</li>
+                    </ul>
+                    <p>
+                      <em>
+                        É importante lembrar que o IMC é uma ferramenta de triagem e não leva em consideração fatores
+                        como composição corporal, distribuição de gordura e outros aspectos de saúde. Para uma avaliação
+                        mais completa, é recomendado consultar um profissional de saúde.
+                      </em>
+                    </p>
+                  </div>
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <form id="bmi-form" novalidate>
+              <div class="mb-3">
+                <label for="weight" class="form-label">Peso (kg)</label>
+                <input type="number" class="form-control" id="weight" name="weight" placeholder="Ex.: 70" min="0"
+                  step="0.01">
+              </div>
+
+              <div class="mb-3">
+                <label for="height" class="form-label">Altura (m)</label>
+                <input type="number" class="form-control" id="height" name="height" placeholder="Ex.: 1.75" min="0"
+                  step="0.01">
+              </div>
+
+              <div class="d-grid gap-2">
+                <button type="submit" class="btn btn-primary">Calcular IMC</button>
+              </div>
+            </form>
+
+            <div id="message" class="alert alert-danger mt-4 d-none" role="alert"></div>
+
+            <section class="mt-4 p-3 bg-body-tertiary rounded-3">
+              <h2 class="h6 text-uppercase text-secondary mb-3">Resultado</h2>
+              <p class="mb-2"><strong>IMC:</strong> <span id="bmi-value">-</span></p>
+              <p class="mb-0"><strong>Categoria OMS:</strong> <span id="bmi-category">-</span></p>
+            </section>
+          </div>
+        </section>
+      </div>
+    </div>
+  </main>
+
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
+    integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r"
+    crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.min.js"
+    integrity="sha384-G/EV+4j2dNv+tEPo3++6LCgdCROaejBqfUeNjuKAiuXbjrxilcCdDz6ZAVfHWe1Y"
+    crossorigin="anonymous"></script>
+
+  <script src="./js/categories.js" defer></script>
+  <script src="./js/bmi.js" defer></script>
+  <script src="./js/app.js" defer></script>
 </body>
 
 </html>
