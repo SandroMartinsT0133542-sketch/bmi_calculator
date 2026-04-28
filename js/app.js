@@ -7,7 +7,6 @@ document.addEventListener("DOMContentLoaded", function () {
   const bmiValue = document.querySelector("#bmi-value");
   const bmiCategory = document.querySelector("#bmi-category");
   const message = document.querySelector("#message");
-
   const resultSection = document.querySelector("section.mt-4");
 
   if (
@@ -34,37 +33,48 @@ document.addEventListener("DOMContentLoaded", function () {
 
   function renderResult(bmi, category) {
     const color = getCategoryColor(category);
-
-    console.log("resultSection", resultSection);
     resultSection.classList.add(color);
-
     bmiValue.textContent = bmi;
     bmiCategory.textContent = category;
   }
+
+  /**
+   * Handles invalid input by displaying an appropriate message and resetting the result display.
+   * @param {number|string} value - The value to check for validity (BMI or category).
+   * @param {string} type - The type of value being checked ("bmi" or "category").
+   * @returns {boolean} - Returns true if the input is invalid and has been handled, false otherwise.
+   */
+  const handleInvalidInput = (value, type) => {
+    if (type !== "bmi" && type !== "category")
+      throw new Error(`Invalid input type: ${type}`);
+
+    const errorMessages = {
+      bmi: "Introduza valores válidos para peso e altura. Use números positivos.",
+      category: "Não foi possível determinar a categoria do IMC.",
+    };
+
+    if (value === "Invalid input") {
+      bmiValue.textContent = "-";
+      bmiCategory.textContent = "-";
+      showMessage(errorMessages[type] || "Entrada inválida.");
+      return true;
+    }
+    return false;
+  };
+
   function handleCalculation(event) {
     event.preventDefault();
 
     const weight = parseFloat(weightInput.value);
     const height = parseFloat(heightInput.value);
     const bmi = calculateBMI(weight, height);
-
-    if (bmi === "Invalid input") {
-      bmiValue.textContent = "-";
-      bmiCategory.textContent = "-";
-      showMessage(
-        "Introduza valores válidos para peso e altura. Use números positivos.",
-      );
-      return;
-    }
-
     const category = getBMICategory(bmi);
 
-    if (category === "Invalid input") {
-      bmiValue.textContent = "-";
-      bmiCategory.textContent = "-";
-      showMessage("Não foi possível determinar a categoria do IMC.");
+    if (
+      handleInvalidInput(bmi, "bmi") ||
+      handleInvalidInput(category, "category")
+    )
       return;
-    }
 
     hideMessage();
     renderResult(bmi, category);
